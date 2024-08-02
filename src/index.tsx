@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ReactGA from "react-ga4";
 
-// 環境変数は文字列
 const analyticsPass: any = process.env.REACT_APP_GOOGLE_ANALYTICS_PASS
 
 ReactGA.initialize(analyticsPass);

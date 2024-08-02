@@ -8,7 +8,48 @@ import styled from 'styled-components'
 
 const Wrapper = styled.main`
   background: #C3A5FF;
+  padding: 4rem 0;
+  height: 100vh;
+  @media (max-width: 400px) {
+    padding: 5rem 2rem;
+  }
 `
+
+// Selectは流用
+const Select = styled.select`
+  background: #ffaf00;
+  font-size: 3rem;
+  height: 4rem;
+  border: 0.3rem solid black;
+  &:disabled {
+    color: black;
+    background: #ffaf00;
+  }
+`
+
+// Inputは流用
+const Input = styled.input`
+  font-size: 3rem;
+  height: 4rem;
+  width: 20rem;
+  border: 0.3rem solid black;
+  border-right: none;
+`
+
+// Buttonは流用
+const Button = styled.button`
+  font-size: 3rem;
+  background: #8976b1;
+  color: white;
+  cursor: pointer;
+`
+
+
+const Arrow = styled.div`
+  font-size: 3rem;
+  font-weight: bold;
+`
+
 
 const Main = () => {
   const [unitVal, setUnitVal] = useState<string>("")
@@ -16,7 +57,7 @@ const Main = () => {
   const toggleUnitVal = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const val = Number(e.target.value)
     const result = !!(val)
-    if (result == true) {
+    if (result === true) {
       setUnitVal(e.target.value)
     }
   }
@@ -31,11 +72,15 @@ const Main = () => {
   const [originUnit, setOriginUnit] = useState<number>(2)
 
   const calc = [millimeter, centimeter, meter, kilometer, inch]
+
+  const copyConversionValue = (val: string): void => {
+    navigator.clipboard.writeText(val)
+  }
   
   return (
     <Wrapper>
       <div>
-        <select defaultValue={lenUnit} onChange={(e) => setLenUnit(Number(e.target.value))}>
+        <Select defaultValue={lenUnit} onChange={(e) => setLenUnit(Number(e.target.value))}>
           {
             lengthUnit.map((u, index) => {
               return (
@@ -43,10 +88,12 @@ const Main = () => {
               )
             })
           }
-        </select>
+        </Select>
+      </div>
+      <div>
         <p>
-          <input type="text" onChange={(e) => toggleUnitVal(e)} value={unitVal} />
-          <select defaultValue={lenUnit} onChange={(e) => setOriginUnit(Number(e.target.value))}>
+          <Input type="text" onChange={(e) => toggleUnitVal(e)} value={unitVal} />
+          <Select defaultValue={lenUnit} onChange={(e) => setOriginUnit(Number(e.target.value))}>
             {
               lengthUnit.map((u, index) => {
                 return (
@@ -54,17 +101,24 @@ const Main = () => {
                 )
               })
             }
-          </select> 
+          </Select> 
         </p>
 
-        <br />
-        <button onClick={() => setUnitVal("")}>クリア</button>
+        <Button onClick={() => setUnitVal("")}>クリア</Button>
       </div>
-      <div>
+      <Arrow>
         <p>↓↓↓</p>
+      </Arrow>
+      <div>
+
         <p>
-          <input type="text" value={String(calc[lenUnit](originUnit, unitVal))} />{lengthUnit[lenUnit]}
+          <Input readOnly={true} type="text" value={String(calc[lenUnit](originUnit, unitVal))} />
+          <Select disabled={true}>
+            <option>{lengthUnit[lenUnit]}</option>
+            <option>インチ</option>
+          </Select>
         </p>
+        <Button onClick={() => copyConversionValue(String(calc[lenUnit](originUnit, unitVal)))}>コピー</Button>
       </div>
     </Wrapper>
   )

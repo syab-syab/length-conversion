@@ -11,7 +11,7 @@ const Wrapper = styled.main`
   padding: 4rem 0;
   height: 100vh;
   @media (max-width: 400px) {
-    padding: 5rem 2rem;
+    padding-top: 5rem;
   }
 `
 
@@ -33,6 +33,7 @@ const Input = styled.input`
   height: 4rem;
   width: 20rem;
   border: 0.3rem solid black;
+  border-radius: 0;
   border-right: none;
 `
 
